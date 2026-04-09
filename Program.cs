@@ -9,10 +9,15 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 // ─────────────────────────────────────────────────────────────
-// 1. DATABASE — EF Core with SQL Server
+// 1. DATABASE — SQL Server locally, SQLite on Azure
 // ─────────────────────────────────────────────────────────────
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+{
+    if (builder.Environment.IsDevelopment())
+        options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+    else
+        options.UseSqlite("Data Source=/home/data/jwtauthdemo.db");
+});
 
 // ─────────────────────────────────────────────────────────────
 // 2. SERVICES
