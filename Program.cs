@@ -171,4 +171,8 @@ using (var scope = app.Services.CreateScope())
     db.Database.EnsureCreated();
 }
 
+// On Azure App Service Linux, listen on port 8080
+if (!builder.Environment.IsDevelopment())
+    app.Urls.Add("http://*:8080");
+
 app.Run();
